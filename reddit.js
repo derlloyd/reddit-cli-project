@@ -45,14 +45,28 @@ function getSortedHomepage(sortingMethod, callback) {
     })
 }
 
-getSortedHomepage("controversial", console.log)
+// getSortedHomepage("controversial", console.log)
 
 /*
 This function should "return" the posts on the front page of a subreddit as an array of objects.
 */
 function getSubreddit(subreddit, callback) {
   // Load reddit.com/r/{subreddit}.json and call back with the array of posts
+    var address = "http://reddit.com/r/" + subreddit + ".json";
+    request(address, function(err, result) {
+        var resultObj = JSON.parse(result.body);
+        if (typeof callback === "function") {
+            callback(resultObj.data.children);
+        }
+    })
 }
+    
+
+getSubreddit("montreal", console.log)
+    
+    
+    
+
 
 /*
 This function should "return" the posts on the front page of a subreddit as an array of objects.
