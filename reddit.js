@@ -10,6 +10,15 @@ function callReddit(address, callback) {
     })
 }
 
+function getSubreddit(subred, callback) {
+    var address = "http://reddit.com/r/" + subred + "/.json";
+    request(address, function(err, result) {
+        var resultObj = JSON.parse(result.body);
+        if (typeof callback === "function") {
+            callback(resultObj.data.children);
+        }
+    })
+}
 
 
 function sortHomeOptions(callback) {
@@ -17,7 +26,7 @@ function sortHomeOptions(callback) {
         type: 'list',
         name: 'sort',
         message: 'Select a sorting method',
-        choices: ['hot', 'new', 'rising', 'controversial', 'top', 'gilded', 'wiki', 'promoted'],
+        choices: ['hot', 'new', 'rising', 'controversial', 'top', 'gilded'],
         default: 'hot'
     }).then(
         function(selection) {
@@ -37,7 +46,7 @@ function sortSubredditOptions(callback) {
         type: 'list',
         name: 'sort',
         message: 'Select a sorting method',
-        choices: ['hot', 'new', 'rising', 'controversial', 'top', 'gilded', 'wiki', 'promoted'],
+        choices: ['hot', 'new', 'rising', 'controversial', 'top', 'gilded'],
         default: 'hot'
     }]).then(
         function(selection) {
@@ -65,6 +74,7 @@ function sortSubredditsOptions(callback) {
 // Export the API
 module.exports = {
     sortHomeOptions: sortHomeOptions,
+    getSubreddit: getSubreddit,
     sortSubredditOptions: sortSubredditOptions,
     sortSubredditsOptions: sortSubredditsOptions
 };
