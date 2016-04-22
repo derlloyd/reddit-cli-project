@@ -1,4 +1,5 @@
 var request = require('request');
+var inquirer = require('inquirer');
 
 function callReddit(address, callback) {
     request(address, function(err, result) {
@@ -10,20 +11,22 @@ function callReddit(address, callback) {
 }
 
 
-/*
-This function should "return" the default homepage posts as an array of objects
-*/
-function getHomepage(callback) {
-  // Load reddit.com/.json and call back with the array of posts
-    var address = "http://reddit.com/.json";
-    callReddit(address, callback);
+
+function sortHomeOptions(callback) {
+    inquirer.prompt({
+        type: 'list',
+        name: 'choice',
+        message: 'Select a sorting method',
+        choices: ['hot', 'new', 'rising', 'controversial', 'top', 'gilded', 'wiki', 'promoted'],
+        default: 'hot'
+    }).then(
+        function(selection) {
+            getSortedHomepage(selection.choice, callback);    
+        }
+    )
 }
 
 
-/*
-This function should "return" the default homepage posts as an array of objects.
-In contrast to the `getHomepage` function, this one accepts a `sortingMethod` parameter.
-*/
 function getSortedHomepage(sortingMethod, callback) {
   // Load reddit.com/{sortingMethod}.json and call back with the array of posts
   // sorting method chosen froma - list already validated
@@ -32,20 +35,25 @@ function getSortedHomepage(sortingMethod, callback) {
 }
 
 
-/*
-This function should "return" the posts on the front page of a subreddit as an array of objects.
-*/
-function getSubreddit(subreddit, callback) {
-  // Load reddit.com/r/{subreddit}.json and call back with the array of posts
-    var address = "http://reddit.com/r/" + subreddit + ".json";
-    callReddit(address, callback);
+function sortSubredditOptions(callback) {
+    inquirer.prompt([{
+        type: 'input',
+        name: 'subred',
+        message: 'Input a subreddit name',
+    }, {
+        type: 'list',
+        name: 'sort',
+        message: 'Select a sorting method',
+        choices: ['hot', 'new', 'rising', 'controversial', 'top', 'gilded', 'wiki', 'promoted'],
+        default: 'hot'
+    }]).then(
+        function(selection) {
+            getSortedSubreddit(selection.subred, selection.sort, callback);    
+        }
+    )
 }
-    
 
-/*
-This function should "return" the posts on the front page of a subreddit as an array of objects.
-In contrast to the `getSubreddit` function, this one accepts a `sortingMethod` parameter.
-*/
+
 function getSortedSubreddit(subreddit, sortingMethod, callback) {
   // Load reddit.com/r/{subreddit}/{sortingMethod}.json and call back with the array of posts
   // sorting method chosen froma - list already validated
@@ -55,13 +63,18 @@ function getSortedSubreddit(subreddit, sortingMethod, callback) {
 
 
 
-/*
-This function should "return" all the popular subreddits
-*/
-function getSubreddits(callback) {
-  // Load reddit.com/subreddits.json and call back with an array of subreddits
-    var address = "http://reddit.com/subreddits.json";
-    callReddit(address, callback);
+function sortSubredditsOptions(callback) {
+    inquirer.prompt({
+        type: 'list',
+        name: 'sort',
+        message: 'Select a sorting method',
+        choices: ['hot', 'new'],
+        default: 'hot'
+    }).then(
+        function(selection) {
+            getSortedSubreddits(selection.sort, callback);    
+        }
+    )
 }
 
 function getSortedSubreddits(sortingMethod, callback) {
@@ -73,10 +86,7 @@ function getSortedSubreddits(sortingMethod, callback) {
 
 // Export the API
 module.exports = {
-    getHomepage: getHomepage, // do not need
-    getSortedHomepage: getSortedHomepage,
-    getSubreddit: getSubreddit, // do not need
-    getSortedSubreddit: getSortedSubreddit,
-    getSubreddits: getSubreddits, // do not need
-    getSortedSubreddits: getSortedSubreddits
+    sortHomeOptions: sortHomeOptions,
+    sortSubredditOptions: sortSubredditOptions,
+    sortSubredditsOptions: sortSubredditsOptions
 };

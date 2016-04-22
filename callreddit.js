@@ -25,13 +25,13 @@ function getUserChoice() {
     }).then(
         function(answers) {
             if (answers.menu === 'HOMEPAGE') {
-                sortHomeOptions()
+                reddit.sortHomeOptions(listObject);
             }
             else if (answers.menu === 'SUBREDDIT') {
-                sortSubredditOptions()
+                reddit.sortSubredditOptions(listObject);
             }
             else if (answers.menu === 'SUBREDDITS') {
-                sortSubredditsOptions()
+                reddit.sortSubredditsOptions(listObject);
             }
             else if (answers.menu === 'EXIT') {
                 return;
@@ -40,54 +40,9 @@ function getUserChoice() {
     )
 }
 
-function sortHomeOptions() {
-    inquirer.prompt({
-        type: 'list',
-        name: 'choice',
-        message: 'Select a sorting method',
-        choices: ['hot', 'new', 'rising', 'controversial', 'top', 'gilded', 'wiki', 'promoted'],
-        default: 'hot'
-    }).then(
-        function(selection) {
-            reddit.getSortedHomepage(selection.choice, console.log)    
-        }
-    )
+function listObject(obj) {
+    console.log(typeof obj);
 }
 
 
-function sortSubredditOptions() {
-    inquirer.prompt([{
-        type: 'input',
-        name: 'subred',
-        message: 'Input a subreddit name',
-    }, {
-        type: 'list',
-        name: 'sort',
-        message: 'Select a sorting method',
-        choices: ['hot', 'new', 'rising', 'controversial', 'top', 'gilded', 'wiki', 'promoted'],
-        default: 'hot'
-    }]).then(
-        function(selection) {
-            reddit.getSortedSubreddit(selection.subred, selection.sort, console.log)    
-        }
-    )
-}
-
-
-function sortSubredditsOptions() {
-    inquirer.prompt({
-        type: 'list',
-        name: 'choice',
-        message: 'Select a sorting method',
-        choices: ['hot', 'new'],
-        default: 'hot'
-    }).then(
-        function(selection) {
-            reddit.getSortedSubreddits(selection.choice, console.log)    
-        }
-    )
-}
-
-
-
-getUserChoice();
+console.log(typeof getUserChoice());
