@@ -5,21 +5,25 @@ var reddit = require('./reddit.js')
 var menuChoices = [
   {name: 'Show homepage', value: 'HOMEPAGE'},
   {name: 'Show subreddit', value: 'SUBREDDIT'},
-  {name: 'List subreddits', value: 'SUBREDDITS'},
+  {name: 'List all subreddits', value: 'SUBREDDITS'},
   {name: 'Exit', value: 'EXIT'}
 ];
 
 var sortOptions = [
-  {name: 'hot'},
-  {name: 'new'},
-  {name: 'rising'},
-  {name: 'controversial'},
-  {name: 'top'},
-  {name: 'gilded'},
-  {name: 'wiki'},
-  {name: 'promoted'}
-];
+    'hot',
+    'new',
+    'rising',
+    'controversial',
+    'top',
+    'gilded',
+    'wiki',
+    'promoted'
+];  // default hot
 
+var subSortOptions = [
+    'hot',
+    'new'
+]; // default hot
 
 inquirer.prompt({
   type: 'list',
@@ -29,10 +33,20 @@ inquirer.prompt({
 }).then(
   function(answers) {
     if (answers === 'HOMEPAGE') {
-        // reddit.getHomepage(console.log);
+        // sortOptions
+        // reddit.getSortedHomepage;
     }
     else if (answers === 'SUBREDDIT') {
-        reddit.getSortedSubreddit()
+        // input subreddit name - test for briken link 
+        // sortOptions
+        // reddit.getSortedSubreddit
+    }
+    else if (answers === 'SUBREDDITS') {
+        // get subSortOptions
+        // reddit.getSortedSubreddits
+    }
+    else if (answers === 'EXIT') {
+        // return to console
     }
     
     

@@ -91,6 +91,13 @@ function getSubreddits(callback) {
     callReddit(address, callback);
 }
 
+function getSortedSubreddits(sortingMethod, callback) {
+  // Load reddit.com/subreddits.json and call back with an array of subreddits
+    var address = "http://reddit.com/subreddits/" + sortingMethod + ".json";
+    callReddit(address, callback);
+}
+
+
 // Export the API
 module.exports = {
     getHomepage: getHomepage,
