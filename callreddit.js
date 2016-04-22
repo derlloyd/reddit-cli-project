@@ -1,5 +1,6 @@
 var inquirer = require('inquirer');
 var reddit = require('./reddit.js')
+require('colors')
 
 
 var menuChoices = [{
@@ -25,13 +26,13 @@ function getUserChoice() {
     }).then(
         function(answers) {
             if (answers.menu === 'HOMEPAGE') {
-                reddit.sortHomeOptions(listObject);
+                reddit.sortHomeOptions(listOfPosts);
             }
             else if (answers.menu === 'SUBREDDIT') {
-                reddit.sortSubredditOptions(listObject);
+                reddit.sortSubredditOptions(listOfPosts);
             }
             else if (answers.menu === 'SUBREDDITS') {
-                reddit.sortSubredditsOptions(listObject);
+                reddit.sortSubredditsOptions(listOfSubs);
             }
             else if (answers.menu === 'EXIT') {
                 return;
@@ -40,9 +41,29 @@ function getUserChoice() {
     )
 }
 
-function listObject(obj) {
-    console.log(typeof obj);
+
+function listOfPosts(newArray) {
+    newArray.forEach(function(obj) {
+        console.log(obj.data.title.red.bold);
+        console.log(obj.data.url.blue.underline);
+        console.log("Upvotes: " + obj.data.ups);
+        console.log(obj.data.author);
+        console.log("________________________________")
+    });
+    getUserChoice();
+}
+
+function listOfSubs(newArray) {
+    newArray.forEach(function(obj) {
+        console.log(obj.data.title.red.bold);
+        console.log(obj.data.url.blue.underline);
+        // console.log("Upvotes: " + obj.data.ups);
+        // console.log(obj.data.author);
+        console.log("________________________________")
+    });
 }
 
 
-console.log(typeof getUserChoice());
+
+
+getUserChoice();
