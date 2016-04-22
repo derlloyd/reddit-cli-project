@@ -59,7 +59,7 @@ function listOfSubs(newArray) {
         console.log(obj.data.url.blue.underline);
         // console.log("Upvotes: " + obj.data.ups);
         // console.log(obj.data.author);
-        console.log("________________________________")
+        // console.log("________________________________")
     });
 }
 
