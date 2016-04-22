@@ -2,54 +2,92 @@ var inquirer = require('inquirer');
 var reddit = require('./reddit.js')
 
 
-var menuChoices = [
-  {name: 'Show homepage', value: 'HOMEPAGE'},
-  {name: 'Show subreddit', value: 'SUBREDDIT'},
-  {name: 'List all subreddits', value: 'SUBREDDITS'},
-  {name: 'Exit', value: 'EXIT'}
-];
+var menuChoices = [{
+    name: 'Show homepage',
+    value: 'HOMEPAGE'
+}, {
+    name: 'Show subreddit',
+    value: 'SUBREDDIT'
+}, {
+    name: 'List all subreddits',
+    value: 'SUBREDDITS'
+}, {
+    name: 'Exit',
+    value: 'EXIT'
+}];
 
-var sortOptions = [
-    'hot',
-    'new',
-    'rising',
-    'controversial',
-    'top',
-    'gilded',
-    'wiki',
-    'promoted'
-];  // default hot
+function getUserChoice() {
+    inquirer.prompt({
+        type: 'list',
+        name: 'menu',
+        message: 'What do you want to do?',
+        choices: menuChoices
+    }).then(
+        function(answers) {
+            if (answers.menu === 'HOMEPAGE') {
+                sortHomeOptions()
+            }
+            else if (answers.menu === 'SUBREDDIT') {
+                sortSubredditOptions()
+            }
+            else if (answers.menu === 'SUBREDDITS') {
+                sortSubredditsOptions()
+            }
+            else if (answers.menu === 'EXIT') {
+                return;
+            }
+        }
+    )
+}
 
-var subSortOptions = [
-    'hot',
-    'new'
-]; // default hot
+function sortHomeOptions() {
+    inquirer.prompt({
+        type: 'list',
+        name: 'choice',
+        message: 'Select a sorting method',
+        choices: ['hot', 'new', 'rising', 'controversial', 'top', 'gilded', 'wiki', 'promoted'],
+        default: 'hot'
+    }).then(
+        function(selection) {
+            reddit.getSortedHomepage(selection.choice, console.log)    
+        }
+    )
+}
 
-inquirer.prompt({
-  type: 'list',
-  name: 'menu',
-  message: 'What do you want to do?',
-  choices: menuChoices
-}).then(
-  function(answers) {
-    if (answers === 'HOMEPAGE') {
-        // sortOptions
-        // reddit.getSortedHomepage;
-    }
-    else if (answers === 'SUBREDDIT') {
-        // input subreddit name - test for briken link 
-        // sortOptions
-        // reddit.getSortedSubreddit
-    }
-    else if (answers === 'SUBREDDITS') {
-        // get subSortOptions
-        // reddit.getSortedSubreddits
-    }
-    else if (answers === 'EXIT') {
-        // return to console
-    }
-    
-    
-    console.log(answers);
-  }
-);
+
+function sortSubredditOptions() {
+    inquirer.prompt([{
+        type: 'input',
+        name: 'subred',
+        message: 'Input a subreddit name',
+    }, {
+        type: 'list',
+        name: 'sort',
+        message: 'Select a sorting method',
+        choices: ['hot', 'new', 'rising', 'controversial', 'top', 'gilded', 'wiki', 'promoted'],
+        default: 'hot'
+    }]).then(
+        function(selection) {
+            reddit.getSortedSubreddit(selection.subred, selection.sort, console.log)    
+        }
+    )
+}
+
+
+function sortSubredditsOptions() {
+    inquirer.prompt({
+        type: 'list',
+        name: 'choice',
+        message: 'Select a sorting method',
+        choices: ['hot', 'new'],
+        default: 'hot'
+    }).then(
+        function(selection) {
+            reddit.getSortedSubreddits(selection.choice, console.log)    
+        }
+    )
+}
+
+
+
+getUserChoice();

@@ -26,20 +26,7 @@ In contrast to the `getHomepage` function, this one accepts a `sortingMethod` pa
 */
 function getSortedHomepage(sortingMethod, callback) {
   // Load reddit.com/{sortingMethod}.json and call back with the array of posts
-  // Check if the sorting method is valid based on the various Reddit sorting methods
-    if (sortingMethod === "hot" || 
-        sortingMethod === "new" ||
-        sortingMethod === "rising" ||
-        sortingMethod === "controversial" ||
-        sortingMethod === "top" ||
-        sortingMethod === "gilded" ||
-        sortingMethod === "wiki" ||
-        sortingMethod === "promoted") {
-        var sort = sortingMethod;
-    }
-    else {
-        var sort = "hot";
-    }
+  // sorting method chosen froma - list already validated
     var address = "http://reddit.com/" + sortingMethod + "/.json";
     callReddit(address, callback);
 }
@@ -55,28 +42,14 @@ function getSubreddit(subreddit, callback) {
 }
     
 
-
 /*
 This function should "return" the posts on the front page of a subreddit as an array of objects.
 In contrast to the `getSubreddit` function, this one accepts a `sortingMethod` parameter.
 */
 function getSortedSubreddit(subreddit, sortingMethod, callback) {
   // Load reddit.com/r/{subreddit}/{sortingMethod}.json and call back with the array of posts
-  // Check if the sorting method is valid based on the various Reddit sorting methods
-    if (sortingMethod === "hot" || 
-        sortingMethod === "new" ||
-        sortingMethod === "rising" ||
-        sortingMethod === "controversial" ||
-        sortingMethod === "top" ||
-        sortingMethod === "gilded" ||
-        sortingMethod === "wiki" ||
-        sortingMethod === "promoted") {
-        var sort = sortingMethod;
-    }
-    else {
-        var sort = "hot";
-    }
-    var address = "http://reddit.com/r/" + subreddit + "/" + sort + ".json";
+  // sorting method chosen froma - list already validated
+    var address = "http://reddit.com/r/" + subreddit + "/" + sortingMethod + ".json";
     callReddit(address, callback);
 }
 
@@ -100,9 +73,10 @@ function getSortedSubreddits(sortingMethod, callback) {
 
 // Export the API
 module.exports = {
-    getHomepage: getHomepage,
+    getHomepage: getHomepage, // do not need
     getSortedHomepage: getSortedHomepage,
-    getSubreddit: getSubreddit,
+    getSubreddit: getSubreddit, // do not need
     getSortedSubreddit: getSortedSubreddit,
-    getSubreddits: getSubreddits
+    getSubreddits: getSubreddits, // do not need
+    getSortedSubreddits: getSortedSubreddits
 };
